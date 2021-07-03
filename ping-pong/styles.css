@@ -1,7 +1,7 @@
 :root {
-  --bgcol: black;
-  --border-color: white;
-  --font-color: white;
+  --bgcol: white;
+  --border-color: black;
+  --font-color: black;
 }
 
 body {
@@ -42,6 +42,8 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: absolute;
+  outline: none;
 }
 
 .rod {

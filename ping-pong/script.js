@@ -25,6 +25,33 @@ function animateBall() {
   }
 }
 
-var interval = setInterval(animateBall, 5);
+var rodPosition = 0;
 
-setTimeout(() => clearInterval(interval), 10000);
+var delX = 5;
+
+function moveRod(event) {
+  var rodWidth = $("#rod-container").width();
+  var containerWidth = $("#inner-div").width();
+
+  if (event.key === "d") {
+    if (rodPosition + rodWidth + delX > containerWidth) {
+      return;
+    }
+    rodPosition += delX;
+  }
+
+  if (event.key === "a") {
+    if (rodPosition - delX < 0) {
+      return;
+    }
+    rodPosition -= delX;
+  }
+
+  $("#rod-container").position({
+    my: "left top",
+    at: `left+${rodPosition} top`,
+    of: "#inner-div",
+  });
+}
+
+$("#rod-container").keydown(moveRod);
