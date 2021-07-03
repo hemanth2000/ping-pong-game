@@ -3,16 +3,20 @@
   <head>
     <title>Ping Pong</title>
     <link rel="stylesheet" type="text/css" href="styles.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
   </head>
   <body>
     <div id="outer-div">
       <div id="inner-div">
-        <div id="rod-container">
+        <div id="rod-container" tabindex="0">
           <div class="rod blue-bg">Rod 1</div>
           <div class="rod purple-bg">Rod 2</div>
         </div>
+        <div id="ball"></div>
       </div>
     </div>
+
     <script src="script.js"></script>
   </body>
 </html>
