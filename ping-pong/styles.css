@@ -24,7 +24,7 @@ body {
 #inner-div {
   width: 100%;
   height: 100%;
-  border: 1px solid var(--border-color);
+  border: 0px solid var(--border-color);
   position: relative;
 }
 
@@ -32,6 +32,7 @@ body {
   width: 20px;
   height: 20px;
   position: absolute;
+  border: none;
   border-radius: 50%;
   background-color: red;
 }
@@ -44,13 +45,18 @@ body {
   justify-content: space-between;
   position: absolute;
   outline: none;
+  top: 0px;
 }
 
 .rod {
   width: 100%;
-  height: 20px;
+  border: none;
   border-radius: 10px;
-  text-align: center;
+  height: 30px;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Color classes */
