@@ -1,3 +1,5 @@
 # Develop Ping Pong game using HTML, CSS, and JavaScript
 
-###Rules of Game
+Game is very simple. It is a single player game for now.
+
+### Rules of Game
