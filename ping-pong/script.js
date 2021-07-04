@@ -1,12 +1,39 @@
-var prevWinner = 1;
+var playerNo = 0;
 var gameLive = false;
+
+function setInitialPosition() {
+  $("#rod-container").position({
+    my: "top",
+    at: "top",
+    of: "#inner-div",
+  });
+
+  let ballPos = playerNo
+    ? `top+${$(".rod").height()}`
+    : `bottom-${$(".rod").height() + $("#ball").height()}`;
+
+  $("#ball").position({
+    my: "top",
+    at: "center " + ballPos,
+    of: "#inner-div",
+  });
+}
+
+function displayTopScore() {
+  if (localStorage.getItem("topScore") === null)
+    alert("Kudos! This is your first game!");
+  else
+    alert(
+      `${localStorage["name"]} is the highest scorer with ${localStorage["topScore"]}`
+    );
+  gameLive = true;
+}
 
 function startGame() {
   $("#rod-container").focus();
   $("#rod-container").keydown(moveRod);
 
-  var p1Score = 0;
-  var p2Score = 0;
+  var pScore = 0;
 
   var ballDia = $("#ball").width();
 
@@ -22,30 +49,20 @@ function startGame() {
   var rodPosition = $("#rod-container").position().left;
   var delX = 15;
 
-  function declareWinner() {
+  function displayScore() {
     let topScore = localStorage.getItem("topScore");
-    if (p1Score > p2Score) {
-      prevWinner = 0;
-
-      if (topScore == undefined || p1Score > topScore) {
-        localStorage.setItem("topScore", p1Score);
-        localStorage.setItem("name", "Player 1");
-      }
-
-      alert(
-        `Player 1 wins this round with ${p1Score}. Highest score is ${localStorage["topScore"]}`
-      );
-    } else {
-      prevWinner = 1;
-      if (topScore == undefined || p2Score > topScore) {
-        localStorage.setItem("topScore", p2Score);
-        localStorage.setItem("name", "Player 2");
-      }
-      alert(
-        `Player 2 wins this round with ${p2Score}. Highest score is ${localStorage["topScore"]}`
-      );
+    let player = `Player ${playerNo + 1}`;
+    pScore -= playerNo ? 0 : 1;
+    if (topScore === null || pScore > topScore) {
+      localStorage.setItem("topScore", pScore);
+      localStorage.setItem("name", player);
     }
 
+    alert(
+      `${player} score is ${pScore}. Highest score is ${localStorage["topScore"]}`
+    );
+
+    playerNo = playerNo == 0 ? 1 : 0;
     gameLive = false;
   }
 
@@ -102,22 +119,11 @@ function startGame() {
         ballXPos + ballDia > rodPosition &&
         ballXPos < rodPosition + $("#rod-container").width()
       ) {
-        if (s1) {
-          p2Score++;
-        } else {
-          p1Score++;
-        }
-
+        pScore++;
         dy = -dy;
       } else {
-        if (s1) {
-          p1Score++;
-        } else {
-          p2Score++;
-        }
-
         clearInterval(interval);
-        declareWinner();
+        displayScore();
         setInitialPosition();
       }
     }
@@ -126,44 +132,12 @@ function startGame() {
   var interval = setInterval(animateBall, 5);
 }
 
-function setInitialPosition() {
-  $("#rod-container").position({
-    my: "top",
-    at: "top",
-    of: "#inner-div",
-  });
-
-  let ballPos;
-
-  if (prevWinner == 0) {
-    ballPos = `top+${$(".rod").height()}`;
-  } else {
-    ballPos = `bottom-${$(".rod").height() + $("#ball").height()}`;
-  }
-
-  $("#ball").position({
-    my: "top",
-    at: "center " + ballPos,
-    of: "#inner-div",
-  });
-}
-
-function showHighestScore() {
-  if (localStorage.getItem("topScore") == undefined)
-    alert("Kudos! This is your first game!");
-  else
-    alert(
-      `${localStorage["name"]} is the highest scorer with ${localStorage["topScore"]}`
-    );
-  gameLive = true;
-}
-
 setInitialPosition();
 
 $(window).keydown((event) => {
   if (!gameLive && event.which == 13) {
     event.preventDefault();
-    showHighestScore();
+    displayTopScore();
     startGame();
   }
 });
