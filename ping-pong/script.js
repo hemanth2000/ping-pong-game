@@ -3,6 +3,7 @@ var gameLive = false;
 
 function startGame() {
   $("#rod-container").focus();
+  $("#rod-container").keydown(moveRod);
 
   var p1Score = 0;
   var p2Score = 0;
@@ -12,10 +13,13 @@ function startGame() {
   var ballXPos = $("#ball").position().left;
   var ballYPos = $("#ball").position().top;
 
+  var rodWidth = $("#rod-container").width();
+  var containerWidth = $("#inner-div").width();
+
   var dx = 2;
   var dy = 2;
 
-  var rodPosition = ($("#inner-div").width() - $("#rod-container").width()) / 2;
+  var rodPosition = $("#rod-container").position().left;
   var delX = 15;
 
   function declareWinner() {
@@ -46,8 +50,15 @@ function startGame() {
   }
 
   function moveRod(event) {
-    var rodWidth = $("#rod-container").width();
-    var containerWidth = $("#inner-div").width();
+    if (event.key != "d" && event.key != "a") {
+      return;
+    }
+
+    $("#rod-container").position({
+      my: "left top",
+      at: `left+${rodPosition} top`,
+      of: "#inner-div",
+    });
 
     if (event.key === "d") {
       if (rodPosition + rodWidth + delX > containerWidth) {
@@ -62,12 +73,6 @@ function startGame() {
       }
       rodPosition -= delX;
     }
-
-    $("#rod-container").position({
-      my: "left top",
-      at: `left+${rodPosition} top`,
-      of: "#inner-div",
-    });
   }
 
   function animateBall() {
@@ -118,20 +123,15 @@ function startGame() {
     }
   }
 
-  $("#rod-container").keydown(moveRod);
   var interval = setInterval(animateBall, 5);
 }
 
 function setInitialPosition() {
-  //   $("#rod-container").position({
-  //     my: "top",
-  //     at: "top",
-  //     of: "#inner-div",
-  //   });
-
-  let leftPos =
-    String(($("#inner-div").width() - $("#rod-container").width()) / 2) + "px";
-  $("#rod-container").css("left", leftPos);
+  $("#rod-container").position({
+    my: "top",
+    at: "top",
+    of: "#inner-div",
+  });
 
   let ballPos;
 
